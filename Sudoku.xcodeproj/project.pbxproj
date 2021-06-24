@@ -15,6 +15,7 @@
 		DA64892026844F7F003D697B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA64891E26844F7F003D697B /* LaunchScreen.storyboard */; };
 		DA64892B26844F7F003D697B /* SudokuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA64892A26844F7F003D697B /* SudokuTests.swift */; };
 		DA64893626844F80003D697B /* SudokuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA64893526844F80003D697B /* SudokuUITests.swift */; };
+		DA64894726844FB2003D697B /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA64894626844FB2003D697B /* BoardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		DA64893126844F80003D697B /* SudokuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SudokuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA64893526844F80003D697B /* SudokuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudokuUITests.swift; sourceTree = "<group>"; };
 		DA64893726844F80003D697B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA64894626844FB2003D697B /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				DA64891326844F7A003D697B /* AppDelegate.swift */,
 				DA64891526844F7A003D697B /* SceneDelegate.swift */,
 				DA64891726844F7A003D697B /* ViewController.swift */,
+				DA64894626844FB2003D697B /* BoardView.swift */,
 				DA64891926844F7A003D697B /* Main.storyboard */,
 				DA64891C26844F7F003D697B /* Assets.xcassets */,
 				DA64891E26844F7F003D697B /* LaunchScreen.storyboard */,
@@ -259,6 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA64891826844F7A003D697B /* ViewController.swift in Sources */,
+				DA64894726844FB2003D697B /* BoardView.swift in Sources */,
 				DA64891426844F7A003D697B /* AppDelegate.swift in Sources */,
 				DA64891626844F7A003D697B /* SceneDelegate.swift in Sources */,
 			);
