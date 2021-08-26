@@ -11,6 +11,7 @@
 		DA2F6572268461FD00355188 /* BoardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2F6571268461FD00355188 /* BoardDelegate.swift */; };
 		DA2F65772684629000355188 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2F65762684629000355188 /* Position.swift */; };
 		DA5E66F72685A82900A4B994 /* NumberPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5E66F62685A82900A4B994 /* NumberPiece.swift */; };
+		DA5E66FC2685ACFB00A4B994 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5E66FB2685ACFB00A4B994 /* Board.swift */; };
 		DA64891426844F7A003D697B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA64891326844F7A003D697B /* AppDelegate.swift */; };
 		DA64891626844F7A003D697B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA64891526844F7A003D697B /* SceneDelegate.swift */; };
 		DA64891826844F7A003D697B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA64891726844F7A003D697B /* ViewController.swift */; };
@@ -44,6 +45,7 @@
 		DA2F6571268461FD00355188 /* BoardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDelegate.swift; sourceTree = "<group>"; };
 		DA2F65762684629000355188 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		DA5E66F62685A82900A4B994 /* NumberPiece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPiece.swift; sourceTree = "<group>"; };
+		DA5E66FB2685ACFB00A4B994 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		DA64891026844F7A003D697B /* Sudoku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sudoku.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA64891326844F7A003D697B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA64891526844F7A003D697B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				DA64891E26844F7F003D697B /* LaunchScreen.storyboard */,
 				DA64892126844F7F003D697B /* Info.plist */,
 				DA5E66F62685A82900A4B994 /* NumberPiece.swift */,
+				DA5E66FB2685ACFB00A4B994 /* Board.swift */,
 			);
 			path = Sudoku;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				DA2F6572268461FD00355188 /* BoardDelegate.swift in Sources */,
 				DA64891626844F7A003D697B /* SceneDelegate.swift in Sources */,
 				DA2F656D2684540200355188 /* SudokuEngine.swift in Sources */,
+				DA5E66FC2685ACFB00A4B994 /* Board.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

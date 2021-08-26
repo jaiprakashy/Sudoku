@@ -13,18 +13,23 @@ class BoardView: UIView {
     var originX: CGFloat = 0.0
     var originY: CGFloat = 0.0
     var cellSize: CGFloat = 40.0
-    var shadowBoard: Array<Array<NumberPiece>> = [[]]
-    var selectedPosition: (row: Int, col: Int)?
+    var shadowBoard: Board!
     var highlightView: UIView!
     
     weak var delegate: BoardDelegate!
 
     override func draw(_ rect: CGRect) {
         // Drawing code
-        dimension = shadowBoard.count
+        removeAllSubViews()
+        delegate.selectedPosition(position: nil)
+        
         cellSize = bounds.width / CGFloat(dimension)
         drawBoard()
         drawPieces()
+    }
+    
+    func removeAllSubViews() {
+        subviews.forEach({ $0.removeFromSuperview() })
     }
     
     func drawBoard() {
@@ -48,7 +53,10 @@ class BoardView: UIView {
     func drawPieces() {
         for row in 0 ..< dimension {
             for col in 0 ..< dimension {
-                let numberPiece = shadowBoard[row][col]
+                let numberPiece = shadowBoard[Position(row: row, col: col)]
+                guard numberPiece != NumberPiece.emptyPiece else {
+                    continue
+                }
                 drawLabel(atRow: row, atCol: col, withNumberPiece: numberPiece)
             }
         }
@@ -59,6 +67,7 @@ class BoardView: UIView {
         label.text = piece.stringValue()
         label.textAlignment = .center
         label.font = piece.isStatic ? UIFont.boldSystemFont(ofSize: 22.0) : UIFont.systemFont(ofSize: 22.0)
+        label.textColor = piece.isStatic ? .black : .blue
         addSubview(label)
     }
     
@@ -70,10 +79,29 @@ class BoardView: UIView {
         let col = Int((location.x - originX) / cellSize)
         
         print(row, col)
-        if (row >= 0 && row <= 8) && (col >= 0 && col <= 8) {
-            selectedPosition = (row, col)
-        } else {
-            selectedPosition = nil
+        highlightCell(at: Position(row: row, col: col))
+    }
+    
+    func highlightCell(at position: Position) {
+        highlightView?.removeFromSuperview()
+        guard delegate.canHighlight(at: position) else {
+            delegate.selectedPosition(position: nil)
+            return
         }
+        
+        highlightView = generateHighlightView(frame: CGRect(x: originX + CGFloat(position.col) * cellSize, y: originY + CGFloat(position.row) * cellSize, width: cellSize, height: cellSize))
+        addSubview(highlightView)
+        
+        delegate.selectedPosition(position: position)
+    }
+    
+    func generateHighlightView(frame: CGRect) -> UIView {
+        let view = UIView(frame: frame)
+        
+        view.backgroundColor = .clear
+        view.layer.borderWidth = 2
+        view.layer.borderColor = UIColor.blue.cgColor
+        
+        return view
     }
 }

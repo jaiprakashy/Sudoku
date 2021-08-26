@@ -8,6 +8,6 @@
 import Foundation
 
 protocol BoardDelegate: class {
-    func enter(value: Int, atPosition position: Position)
-    func value(atPosition position: Position) -> Int
+    func selectedPosition(position: Position?)
+    func canHighlight(at postion: Position) -> Bool
 }

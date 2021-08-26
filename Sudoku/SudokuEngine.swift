@@ -8,7 +8,7 @@
 import Foundation
 
 struct SudokuEngine {
-    var board: Array<Array<NumberPiece>> = [[]]
+    var board: Board!
     var dimension: Int
     
     init(dimension: Int) {
@@ -16,15 +16,15 @@ struct SudokuEngine {
     }
     
     mutating func initializeEmptyGame() {
-        board = Array(repeating: Array(repeating: NumberPiece(value: 0, isStatic: false), count: dimension), count: dimension)
+        self.board = Board(dimension: dimension)
     }
     
     mutating func initializeSampleGame() {
-        board = sampleGame()
+        self.board = sampleBoard(dimension: dimension)
     }
     
-    func sampleGame() -> Array<Array<NumberPiece>> {
-        return [
+    func sampleBoard(dimension: Int) -> Board {
+        let game = [
             [7, 8, 0, 4, 0, 0, 1, 2, 0],
             [6, 0, 0, 0, 7, 5, 0, 0, 9],
             [0, 0, 0, 6, 0, 1, 0, 7, 8],
@@ -34,16 +34,59 @@ struct SudokuEngine {
             [0, 7, 0, 3, 0, 0, 0, 1, 2],
             [1, 2, 0, 0, 0, 7, 4, 0, 0],
             [0, 4, 9, 2, 0, 6, 0, 0, 7]
-        ].map{ numArray in
-            return numArray.map({ NumberPiece(value: $0, isStatic: $0 != 0) })
+        ]
+        
+        var board = Board(dimension: dimension)
+        for row in 0 ..< dimension {
+            for col in 0 ..< dimension {
+                let value = game[row][col]
+                let position = Position(row: row, col: col)
+                board[position] = value == 0 ? NumberPiece.emptyPiece : NumberPiece(value: value, isStatic: true)
+            }
         }
+        return board
+    }
+    
+    func canEdit(at position: Position) -> Bool {
+        let piece = board[position]
+        return !piece.isStatic
+    }
+    
+    func canInsert(piece: NumberPiece, atPosition position: Position) -> Bool {
+        return true
+    }
+    
+    mutating func insert(piece: NumberPiece, atPosition position: Position) {
+        board[position] = piece
+    }
+    
+    mutating func deletePiece(at position: Position) {
+        board.removePiece(at: position)
+    }
+    
+    func newGame() -> Board {
+        return Board(dimension: 10)
+    }
+    
+    mutating func resetGame() {
+        board.reset()
+    }
+    
+    func solution(for board: Board) {
+        
     }
 }
 
 extension SudokuEngine: CustomStringConvertible {
     var description: String {
-        let desc = "Sudoku Engine"
-
+        var desc = "-----------------------\n"
+        for row in 0 ..< dimension {
+            for col in 0 ..< dimension {
+                desc += board[Position(row: row, col: col)].stringValue()
+            }
+            desc += "\n"
+        }
+        desc += "-----------------------"
         return desc
     }
 }
