@@ -7,60 +7,36 @@
 
 import Foundation
 
-enum SudokuLevel {
-    case easy
-    case medium
-    case difficult
-    
-    var missingNumbers: Int {
-        switch self {
-        case .easy: return 30
-        case .medium: return 24
-        case .difficult: return 17
-        }
-    }
-}
-
 typealias Sudoku = (solution: [[Int]], problem: [[Int]])
 
 struct SudokuEngine {
     var board: Board!
     var dimension: Int
+    var problem: [[Int]]!
+    var solution: [[Int]]!
     
     init(dimension: Int) {
         self.dimension = dimension
     }
     
-    mutating func initializeEmptyGame() {
-        self.board = Board(dimension: dimension)
-    }
-    
-    mutating func initializeSampleGame() {
-        self.board = sampleBoard(dimension: dimension)
-    }
-    
-    func sampleBoard(dimension: Int) -> Board {
-        let game = [
-            [7, 8, 0, 4, 0, 0, 1, 2, 0],
-            [6, 0, 0, 0, 7, 5, 0, 0, 9],
-            [0, 0, 0, 6, 0, 1, 0, 7, 8],
-            [0, 0, 7, 0, 4, 0, 2, 6, 0],
-            [0, 0, 1, 0, 5, 0, 9, 3, 0],
-            [9, 0, 4, 0, 6, 0, 0, 0, 5],
-            [0, 7, 0, 3, 0, 0, 0, 1, 2],
-            [1, 2, 0, 0, 0, 7, 4, 0, 0],
-            [0, 4, 9, 2, 0, 6, 0, 0, 7]
-        ]
+    mutating func initializeNewGame(with missingNumbers: Int) {
+        let sudoku = sudokuGenerator(missingNumbers: missingNumbers)
+        solution = sudoku.solution
+        problem = sudoku.problem
         
-        var board = Board(dimension: dimension)
+        setupBoard()
+    }
+    
+    mutating func setupBoard() {
+        var newBoard = Board(dimension: dimension)
         for row in 0 ..< dimension {
             for col in 0 ..< dimension {
-                let value = game[row][col]
+                let value = problem[row][col]
                 let position = Position(row: row, col: col)
-                board[position] = value == 0 ? NumberPiece.emptyPiece : NumberPiece(value: value, isStatic: true)
+                newBoard[position] = value == 0 ? NumberPiece.emptyPiece : NumberPiece(value: value, isStatic: true)
             }
         }
-        return board
+        self.board = newBoard
     }
     
     func canEdit(at position: Position) -> Bool {
@@ -88,8 +64,15 @@ struct SudokuEngine {
         board.reset()
     }
     
-    func solution(for board: Board) {
-        
+    func isSolved() -> Bool {
+        for row in 0 ..< dimension {
+            for col in 0 ..< dimension {
+                if board[Position(row: row, col: col)].value != solution[row][col] {
+                    return false
+                }
+            }
+        }
+        return true
     }
 }
 
@@ -107,7 +90,7 @@ extension SudokuEngine: CustomStringConvertible {
     }
 }
 
-fileprivate func sudokuGenerator(level: SudokuLevel = .easy) -> Sudoku {
+fileprivate func sudokuGenerator(missingNumbers: Int) -> Sudoku {
     let dimension = 9
     let boxDimension = 3
 
@@ -123,7 +106,6 @@ fileprivate func sudokuGenerator(level: SudokuLevel = .easy) -> Sudoku {
         let rowStart = Int(row / boxDimension) * boxDimension
         let colStart = Int(col / boxDimension) * boxDimension
         
-    //    print(rowStart, colStart)
         for r in rowStart ..< rowStart + boxDimension {
             for c in colStart ..< colStart + boxDimension {
                 if solution[r][c] == number {
@@ -241,15 +223,15 @@ fileprivate func sudokuGenerator(level: SudokuLevel = .easy) -> Sudoku {
         }
     }
 
-    let time = Date()
+//    let time = Date()
     fillDiagonal()
     let _ = fillRemaining(i: 0, j: boxDimension)
-    printBoard(board: solution)
-    print(Date().timeIntervalSince(time))
+//    printBoard(board: solution)
+//    print(Date().timeIntervalSince(time))
 
     problem = solution
-    removeNumbers(k: 60)
-    printBoard(board: problem)
+    removeNumbers(k: missingNumbers)
+//    printBoard(board: problem)
     
     return Sudoku(solution: solution, problem: problem)
 }

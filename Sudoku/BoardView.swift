@@ -9,12 +9,14 @@ import UIKit
 
 class BoardView: UIView {
     
-    var dimension: Int = 1
+    var dimension: Int = 9
     var originX: CGFloat = 0.0
     var originY: CGFloat = 0.0
     var cellSize: CGFloat = 40.0
     var shadowBoard: Board!
     var highlightView: UIView!
+    var isFrozen: Bool = false
+    let boxColor: UIColor = #colorLiteral(red: 0.5764705882, green: 0.7098039216, blue: 0.7764705882, alpha: 1)
     
     weak var delegate: BoardDelegate!
 
@@ -24,7 +26,8 @@ class BoardView: UIView {
         delegate.selectedPosition(position: nil)
         
         cellSize = bounds.width / CGFloat(dimension)
-        drawBoard()
+        drawBoxes()
+        drawGrid()
         drawPieces()
     }
     
@@ -32,9 +35,9 @@ class BoardView: UIView {
         subviews.forEach({ $0.removeFromSuperview() })
     }
     
-    func drawBoard() {
+    func drawGrid() {
         let path = UIBezierPath()
-        path.lineWidth = 2.0
+        path.lineWidth = 1.3
         
         for row in 0 ... dimension {
             path.move(to: CGPoint(x: originX, y: originY + CGFloat(row) * cellSize))
@@ -48,6 +51,21 @@ class BoardView: UIView {
         
         UIColor.black.setStroke()
         path.stroke()
+    }
+    
+    func drawBoxes() {
+        var isDark = true
+        let boxSide = bounds.width / 3
+        let boxDimension = dimension / 3
+        for row in 0 ..< boxDimension {
+            for col in 0 ..< boxDimension {
+                let boxPath = UIBezierPath(rect: CGRect(x: CGFloat(row) * boxSide, y: CGFloat(col) * boxSide, width: boxSide, height: boxSide))
+                let color = isDark ? boxColor : boxColor.withAlphaComponent(0.65)
+                color.setFill()
+                boxPath.fill()
+                isDark.toggle()
+            }
+        }
     }
     
     func drawPieces() {
@@ -72,13 +90,21 @@ class BoardView: UIView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !isFrozen else { return }
+        
         let touch = touches.first!
         let location = touch.location(in: self)
-        
+                
         let row = Int((location.y - originY) / cellSize)
         let col = Int((location.x - originX) / cellSize)
         
-        print(row, col)
+        switch (row, col) {
+        case(0 ..< dimension, 0 ..< dimension) :
+            break
+        default:
+            return
+        }
+        
         highlightCell(at: Position(row: row, col: col))
     }
     

@@ -7,9 +7,24 @@
 
 import UIKit
 
+enum SudokuLevel: Int {
+    case easy
+    case medium
+    case difficult
+    
+    var missingNumbers: Int {
+        switch self {
+        case .easy: return 48
+        case .medium: return 54
+        case .difficult: return 60
+        }
+    }
+}
+
 class ViewController: UIViewController {
     @IBOutlet weak var boardView: BoardView!
     @IBOutlet weak var stateFlag: UIImageView!
+    @IBOutlet weak var levelSegmentedControl: UISegmentedControl!
     var dimension: Int = 9
     var selectedPosition: Position?
     
@@ -19,11 +34,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        sudokuEngine = SudokuEngine(dimension: dimension)
-        sudokuEngine.initializeSampleGame()
         
+        sudokuEngine = SudokuEngine(dimension: dimension)
         boardView.delegate = self
-        updateBoard()
+        createNewGame()
     }
     
     @IBAction func inputButtonTapped(sender: UIButton) {
@@ -38,11 +52,14 @@ class ViewController: UIViewController {
     }
     
     @IBAction func newGameButtonTapped(sender: UIButton) {
-        
+        createNewGame()
     }
     
     @IBAction func resetButtonTapped(sender: UIButton) {
-        
+        stateFlag.tintColor = .red
+        boardView.isFrozen = false
+        sudokuEngine.resetGame()
+        updateBoard()
     }
     
     func insert(piece: NumberPiece) {
@@ -52,6 +69,11 @@ class ViewController: UIViewController {
         }
         sudokuEngine.insert(piece: piece, atPosition: position)
         updateBoard()
+        
+        if sudokuEngine.isSolved() {
+            boardView.isFrozen = true
+            stateFlag.tintColor = .green
+        }
     }
     
     func deletePiece() {
@@ -65,6 +87,16 @@ class ViewController: UIViewController {
         boardView.dimension = dimension
         boardView.shadowBoard = sudokuEngine.board
         boardView.setNeedsDisplay()
+    }
+    
+    func createNewGame() {
+        stateFlag.tintColor = .red
+        
+        let difficultyLevel = SudokuLevel(rawValue: levelSegmentedControl.selectedSegmentIndex)?.missingNumbers
+        sudokuEngine.initializeNewGame(with: difficultyLevel!)
+        
+        boardView.isFrozen = false
+        updateBoard()
     }
 }
 
